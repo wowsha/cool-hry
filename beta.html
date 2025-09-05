@@ -8,53 +8,46 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('wow.jpg') no-repeat center center fixed;
-    background-size: cover;
     color: #fff;
+    background: linear-gradient(-45deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    overflow-x: hidden;
   }
 
-  /* Overlay for CAPTCHA */
-  #captchaOverlay {
-    position: fixed;
-    top:0; left:0;
-    width:100vw; height:100vh;
-    background: rgba(0,0,0,0.95);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    flex-direction: column;
-    text-align: center;
-    transition: opacity 0.5s ease;
-  }
-
-  #captchaOverlay h2 {
-    margin-bottom: 20px;
-  }
-
-  /* Main content */
-  #mainContent {
-    display: none;
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
+  @keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
   }
 
   h1 {
     text-align: center;
     font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    margin: 1rem 0;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+    animation: fadeInDown 1.5s ease;
   }
 
   p {
     text-align: center;
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    animation: fadeIn 2s ease;
   }
 
-  /* Button styles */
+  @keyframes fadeInDown {
+    from {opacity:0; transform:translateY(-20px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+
+  @keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+  }
+
+  /* Buttons */
   .game-button {
     display: inline-block;
     margin: 10px;
@@ -69,10 +62,11 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    animation: float 4s ease-in-out infinite;
   }
 
   .game-button:hover {
-    transform: translateY(-5px) scale(1.05);
+    transform: translateY(-5px) scale(1.1);
     box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   }
 
@@ -90,20 +84,28 @@
     left: 150%;
   }
 
-  /* Iframe container */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Game containers */
   .iframe-container {
-    margin: 20px 0;
-    width: 100%;
-    height: 600px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1000px;
+    height: 550px;
     background: rgba(0,0,0,0.6);
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 2s ease;
   }
 
   .iframe-container:hover {
     transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
 
   .iframe-container button {
@@ -122,7 +124,7 @@
   }
 
   .iframe-container button:hover {
-    transform: translate(-50%,-50%) scale(1.1);
+    transform: translate(-50%,-50%) scale(1.15);
     background: #7873f5;
   }
 
@@ -131,83 +133,83 @@
     height: 100%;
     border: none;
     display: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  iframe.loaded {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Glow particle effect */
+  .glow {
+    position: fixed;
+    width: 20px; height: 20px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatGlow 6s infinite ease-in-out;
+    mix-blend-mode: screen;
+    z-index: 0;
+  }
+
+  @keyframes floatGlow {
+    0% { transform: translateY(0) scale(0.8); opacity:0.7;}
+    50% { transform: translateY(-50px) scale(1.2); opacity:1;}
+    100% { transform: translateY(0) scale(0.8); opacity:0.7;}
   }
 
 </style>
 </head>
 <body>
 
-<noscript>
-  <div style="display:block; background:white; color:black; font-family:sans-serif; text-align:center; padding:100px;">
-    <h1>JavaScript Required</h1>
-    <p>This site requires JavaScript to function. Please enable it in your browser settings.</p>
-  </div>
-</noscript>
+<h1>cool hry</h1>
+<p>Jzde jse hrajou hry</p>
 
-<div id="captchaOverlay">
-  <h2>Please verify you're human</h2>
-  <div id="recaptchaContainer"></div>
+<!-- Example iframe with click-to-load -->
+<div class="iframe-container">
+  <button onclick="loadGame(this, 'https://www.crazygames.com/embed/foono-online-multiplayer-card-game')">Load Foono</button>
+  <iframe></iframe>
 </div>
 
-<div id="mainContent">
-  <h1>cool hry</h1>
-  <p>Jzde jse hrajou hry</p>
-
-  <!-- Example iframe with click-to-load -->
-  <div class="iframe-container">
-    <button onclick="loadGame(this, 'https://www.crazygames.com/embed/foono-online-multiplayer-card-game')">Load Foono</button>
-    <iframe></iframe>
-  </div>
-
-  <div class="iframe-container">
-    <button onclick="loadGame(this, 'https://www.crazygames.com/embed/holey-io-battle-royale')">Load Holey IO</button>
-    <iframe></iframe>
-  </div>
-
-  <div class="iframe-container">
-    <button onclick="loadGame(this, 'https://www.crazygames.com/embed/worm-hunt')">Load Worm Hunt</button>
-    <iframe></iframe>
-  </div>
-
-  <p>brzy nove hry</p>
-  <p>cool hry 2025</p>
-
-  <!-- Minecraft buttons -->
-  <div style="text-align:center; margin-top:20px;">
-    <button class="game-button" onclick="window.location.href='https://wowsha.github.io/minecraft-online/'">Minecraft</button>
-    <button class="game-button" onclick="window.location.href='https://wowsha.github.io/Minecraft-Online-HD/'">Minecraft HD</button>
-  </div>
+<div class="iframe-container">
+  <button onclick="loadGame(this, 'https://www.crazygames.com/embed/holey-io-battle-royale')">Load Holey IO</button>
+  <iframe></iframe>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
+<div class="iframe-container">
+  <button onclick="loadGame(this, 'https://www.crazygames.com/embed/worm-hunt')">Load Worm Hunt</button>
+  <iframe></iframe>
+</div>
+
+<p>brzy nove hry</p>
+<p>cool hry 2025</p>
+
+<!-- Minecraft buttons -->
+<div style="text-align:center; margin-top:20px;">
+  <button class="game-button" onclick="window.location.href='https://wowsha.github.io/minecraft-online/'">Minecraft</button>
+  <button class="game-button" onclick="window.location.href='https://wowsha.github.io/Minecraft-Online-HD/'">Minecraft HD</button>
+</div>
+
+<!-- Floating glow particles -->
+<div class="glow" style="top:20%; left:10%; animation-delay:0s;"></div>
+<div class="glow" style="top:40%; left:80%; animation-delay:2s;"></div>
+<div class="glow" style="top:70%; left:30%; animation-delay:4s;"></div>
+<div class="glow" style="top:60%; left:60%; animation-delay:6s;"></div>
+
 <script>
-  function captchaDone() {
-    document.getElementById('captchaOverlay').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  }
-
-  function renderCaptcha() {
-    grecaptcha.render('recaptchaContainer', {
-      'sitekey': '6LdhbZQrAAAAAApl5tfHnyfSxGlwim9s2hrPghza',
-      'callback': captchaDone
-    });
-  }
-
-  // Poll until grecaptcha is ready
-  const captchaInterval = setInterval(() => {
-    if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-      clearInterval(captchaInterval);
-      renderCaptcha();
-    }
-  }, 500);
-
   function loadGame(btn, src) {
     const container = btn.parentElement;
     const iframe = container.querySelector('iframe');
     iframe.src = src;
-    iframe.style.display = 'block';
     btn.style.display = 'none';
+    // Wait a moment before showing iframe with fade-in
+    iframe.onload = () => {
+      iframe.classList.add('loaded');
+    };
   }
 </script>
+
 </body>
 </html>
