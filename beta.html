@@ -146,7 +146,7 @@
 
 <div id="captchaOverlay">
   <h2>Please verify you're human</h2>
-  <div class="g-recaptcha" data-sitekey="6LdhbZQrAAAAAApl5tfHnyfSxGlwim9s2hrPghza" data-callback="captchaDone"></div>
+  <div id="recaptchaContainer"></div>
 </div>
 
 <div id="mainContent">
@@ -179,12 +179,27 @@
   </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script>
   function captchaDone() {
     document.getElementById('captchaOverlay').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
   }
+
+  function renderCaptcha() {
+    grecaptcha.render('recaptchaContainer', {
+      'sitekey': '6LdhbZQrAAAAAApl5tfHnyfSxGlwim9s2hrPghza',
+      'callback': captchaDone
+    });
+  }
+
+  // Poll until grecaptcha is ready
+  const captchaInterval = setInterval(() => {
+    if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+      clearInterval(captchaInterval);
+      renderCaptcha();
+    }
+  }, 500);
 
   function loadGame(btn, src) {
     const container = btn.parentElement;
